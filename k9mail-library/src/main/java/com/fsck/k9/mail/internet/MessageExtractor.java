@@ -8,6 +8,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import org.apache.commons.io.input.BoundedInputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,9 +30,16 @@ import static com.fsck.k9.mail.internet.Viewable.Text;
 import static com.fsck.k9.mail.internet.Viewable.Textual;
 
 public class MessageExtractor {
+    public static final long NO_TEXT_SIZE_LIMIT = -1L;
+
+
     private MessageExtractor() {}
 
     public static String getTextFromPart(Part part) {
+        return getTextFromPart(part, NO_TEXT_SIZE_LIMIT);
+    }
+
+    public static String getTextFromPart(Part part, long textSizeLimit) {
         try {
             if ((part != null) && (part.getBody() != null)) {
                 final Body body = part.getBody();
@@ -76,10 +84,14 @@ public class MessageExtractor {
                      * the stream is now wrapped we'll remove any transfer encoding at this point.
                      */
                     InputStream in = MimeUtility.decodeBody(body);
+                    InputStream possiblyLimitedIn =
+                            textSizeLimit != NO_TEXT_SIZE_LIMIT ? new BoundedInputStream(in, textSizeLimit) : in;
                     try {
-                        return CharsetSupport.readToString(in, charset);
+                        return CharsetSupport.readToString(possiblyLimitedIn, charset);
                     } finally {
                         try {
+                            // This function does magic things for BinaryTempFileBodyInputStream, so the stream passed
+                            // here MUST be the original one obtained from decodeBody above!
                             MimeUtility.closeInputStreamWithoutDeletingTemporaryFiles(in);
                         } catch (IOException e) { /* Ignore */ }
                     }
