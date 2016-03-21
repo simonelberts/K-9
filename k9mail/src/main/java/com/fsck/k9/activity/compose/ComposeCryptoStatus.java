@@ -103,6 +103,9 @@ public class ComposeCryptoStatus {
         return cryptoMode != CryptoMode.DISABLE && signingKeyId != null;
     }
 
+    public boolean isCompatModeEnabled() {
+        return enableCompat;
+    }
 
     public static class ComposeCryptoStatusBuilder {
 
