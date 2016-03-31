@@ -25,6 +25,7 @@ public class ComposeCryptoStatus {
     private Long signingKeyId;
     private Long selfEncryptKeyId;
     private String[] recipientAddresses;
+    private boolean enableCompat;
 
 
     public long[] getEncryptKeyIds() {
@@ -110,6 +111,7 @@ public class ComposeCryptoStatus {
         private Long signingKeyId;
         private Long selfEncryptKeyId;
         private List<Recipient> recipients;
+        private Boolean enableCompat;
 
         public ComposeCryptoStatusBuilder setCryptoProviderState(CryptoProviderState cryptoProviderState) {
             this.cryptoProviderState = cryptoProviderState;
@@ -136,6 +138,11 @@ public class ComposeCryptoStatus {
             return this;
         }
 
+        public ComposeCryptoStatusBuilder setEnableCompat(boolean cryptoEnableCompat) {
+            this.enableCompat = cryptoEnableCompat;
+            return this;
+        }
+
         public ComposeCryptoStatus build() {
             if (cryptoProviderState == null) {
                 throw new AssertionError("cryptoProviderState must be set. this is a bug!");
@@ -145,6 +152,9 @@ public class ComposeCryptoStatus {
             }
             if (recipients == null) {
                 throw new AssertionError("recipients must be set. this is a bug!");
+            }
+            if (enableCompat == null) {
+                throw new AssertionError("enableCompat must be set. this is a bug!");
             }
 
             ArrayList<String> recipientAddresses = new ArrayList<>();
@@ -172,6 +182,7 @@ public class ComposeCryptoStatus {
             result.hasRecipients = hasRecipients;
             result.signingKeyId = signingKeyId;
             result.selfEncryptKeyId = selfEncryptKeyId;
+            result.enableCompat = enableCompat;
             return result;
         }
     }

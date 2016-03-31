@@ -45,6 +45,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     private static final String STATE_KEY_BCC_SHOWN = "state:bccShown";
     private static final String STATE_KEY_LAST_FOCUSED_TYPE = "state:lastFocusedType";
     private static final String STATE_KEY_CURRENT_CRYPTO_MODE = "key:initialOrFormerCryptoMode";
+    private static final String STATE_KEY_CRYPTO_ENABLE_COMPAT = "state:cryptoIsCompatMode";
 
     private static final int CONTACT_PICKER_TO = 1;
     private static final int CONTACT_PICKER_CC = 2;
@@ -68,6 +69,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     private RecipientType lastFocusedType = RecipientType.TO;
     // TODO initialize cryptoMode to other values under some circumstances, e.g. if we reply to an encrypted e-mail
     private CryptoMode currentCryptoMode = CryptoMode.OPPORTUNISTIC;
+    private boolean cryptoEnableCompat = false;
 
 
     public RecipientPresenter(Context context, RecipientMvpView recipientMvpView, Account account) {
@@ -195,6 +197,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         recipientMvpView.setBccVisibility(savedInstanceState.getBoolean(STATE_KEY_BCC_SHOWN));
         lastFocusedType = RecipientType.valueOf(savedInstanceState.getString(STATE_KEY_LAST_FOCUSED_TYPE));
         currentCryptoMode = CryptoMode.valueOf(savedInstanceState.getString(STATE_KEY_CURRENT_CRYPTO_MODE));
+        cryptoEnableCompat = savedInstanceState.getBoolean(STATE_KEY_CRYPTO_ENABLE_COMPAT);
         updateRecipientExpanderVisibility();
     }
 
@@ -203,6 +206,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         outState.putBoolean(STATE_KEY_BCC_SHOWN, recipientMvpView.isBccVisible());
         outState.putString(STATE_KEY_LAST_FOCUSED_TYPE, lastFocusedType.toString());
         outState.putString(STATE_KEY_CURRENT_CRYPTO_MODE, currentCryptoMode.toString());
+        outState.putBoolean(STATE_KEY_CRYPTO_ENABLE_COMPAT, cryptoEnableCompat);
     }
 
     public void initFromDraftMessage(LocalMessage message) {
@@ -351,6 +355,7 @@ public class RecipientPresenter implements PermissionPingCallback {
             ComposeCryptoStatusBuilder builder = new ComposeCryptoStatusBuilder()
                     .setCryptoProviderState(cryptoProviderState)
                     .setCryptoMode(currentCryptoMode)
+                    .setEnableCompat(cryptoEnableCompat)
                     .setRecipients(getAllRecipients());
 
             long accountCryptoKey = account.getCryptoKey();
@@ -423,6 +428,11 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     public void onCryptoModeChanged(CryptoMode cryptoMode) {
         currentCryptoMode = cryptoMode;
+        updateCryptoStatus();
+    }
+
+    public void onCryptoCompatChanged(boolean enableCompat) {
+        cryptoEnableCompat = enableCompat;
         updateCryptoStatus();
     }
 
