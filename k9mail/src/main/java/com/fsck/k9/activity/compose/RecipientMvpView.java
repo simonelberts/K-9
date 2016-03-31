@@ -47,6 +47,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     private final RecipientSelectView bccView;
     private final ViewAnimator cryptoStatusView;
     private final ViewAnimator recipientExpanderContainer;
+    private final View compatIndicator;
     private RecipientPresenter presenter;
 
 
@@ -63,6 +64,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         recipientExpanderContainer = (ViewAnimator) activity.findViewById(R.id.recipient_expander_container);
         cryptoStatusView = (ViewAnimator) activity.findViewById(R.id.crypto_status);
         cryptoStatusView.setOnClickListener(this);
+        compatIndicator = activity.findViewById(R.id.openpgp_compat_indicator);
 
         toView.setOnFocusChangeListener(this);
         ccView.setOnFocusChangeListener(this);
@@ -77,6 +79,8 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         toLabel.setOnClickListener(this);
         ccLabel.setOnClickListener(this);
         bccLabel.setOnClickListener(this);
+
+        compatIndicator.setOnClickListener(this);
     }
 
     public void setPresenter(final RecipientPresenter presenter) {
@@ -265,6 +269,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         bccView.setError(bccView.getContext().getString(R.string.compose_error_incomplete_recipient));
     }
 
+    public void showCompatModeIndicator(boolean compatModeEnabled) {
+        compatIndicator.setVisibility(compatModeEnabled ? View.VISIBLE : View.GONE);
+        activity.invalidateOptionsMenu();
+    }
+
     public void showCryptoStatus(final CryptoStatusDisplayType cryptoStatusDisplayType) {
         boolean shouldBeHidden = cryptoStatusDisplayType.childToDisplay == VIEW_INDEX_HIDDEN;
         if (shouldBeHidden) {
@@ -345,6 +354,9 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             case R.id.crypto_status: {
                 presenter.onClickCryptoStatus();
                 break;
+            }
+            case R.id.openpgp_compat_indicator: {
+                presenter.onClickCompatIndicator();
             }
         }
     }

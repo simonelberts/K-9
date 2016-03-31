@@ -261,6 +261,10 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void onPrepareOptionsMenu(Menu menu) {
+        boolean isCryptoConfigured = cryptoProviderState != CryptoProviderState.UNCONFIGURED;
+        menu.findItem(R.id.openpgp_inline_enable).setVisible(isCryptoConfigured && !cryptoEnableCompat);
+        menu.findItem(R.id.openpgp_inline_disable).setVisible(isCryptoConfigured && cryptoEnableCompat);
+
         boolean noContactPickerAvailable = !hasContactPicker();
         if (noContactPickerAvailable) {
             menu.findItem(R.id.add_from_contacts).setVisible(false);
@@ -358,6 +362,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
 
         recipientMvpView.showCryptoStatus(getCurrentCryptoStatus().getCryptoStatusDisplayType());
+        recipientMvpView.showCompatModeIndicator(getCurrentCryptoStatus().isCompatModeEnabled());
     }
 
     public ComposeCryptoStatus getCurrentCryptoStatus() {
@@ -562,6 +567,11 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
     }
 
+    public void onClickCompatIndicator() {
+        cryptoEnableCompat = false;
+        updateCryptoStatus();
+    }
+
     /**
      * Does the device actually have a Contacts application suitable for
      * picking a contact. As hard as it is to believe, some vendors ship
@@ -700,6 +710,11 @@ public class RecipientPresenter implements PermissionPingCallback {
             Log.e(K9.LOG_TAG, "obtained openpgpapi object, but service is not bound! inconsistent state?");
         }
         return new OpenPgpApi(context, openPgpServiceConnection.getService());
+    }
+
+    public void onMenuSetPgpInline(boolean enableCompat) {
+        cryptoEnableCompat = enableCompat;
+        updateCryptoStatus();
     }
 
     public enum CryptoProviderState {
