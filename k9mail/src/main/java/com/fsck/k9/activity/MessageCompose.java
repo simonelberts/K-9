@@ -67,6 +67,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.activity.compose.CryptoSettingsDialog.OnCryptoModeChangedListener;
+import com.fsck.k9.activity.compose.OpenPgpInlineDialog.OnOpenPgpInlineChangeListener;
 import com.fsck.k9.activity.compose.RecipientMvpView;
 import com.fsck.k9.activity.compose.RecipientPresenter;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
@@ -115,7 +116,8 @@ import org.openintents.openpgp.util.OpenPgpApi;
 
 @SuppressWarnings("deprecation")
 public class MessageCompose extends K9Activity implements OnClickListener,
-        CancelListener, OnFocusChangeListener, OnCryptoModeChangedListener, MessageBuilder.Callback {
+        CancelListener, OnFocusChangeListener, OnCryptoModeChangedListener,
+        OnOpenPgpInlineChangeListener, MessageBuilder.Callback {
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
@@ -251,6 +253,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onCryptoModeChanged(CryptoMode cryptoMode) {
         recipientPresenter.onCryptoModeChanged(cryptoMode);
+    }
+
+    @Override
+    public void onOpenPgpInlineChange(boolean enabled) {
+        recipientPresenter.onCryptoCompatChanged(enabled);
     }
 
     enum Action {

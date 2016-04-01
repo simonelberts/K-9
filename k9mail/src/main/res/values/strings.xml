@@ -1154,5 +1154,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="error_crypto_provider_ui_required">Crypto provider access denied, click crypto icon to retry!</string>
     <string name="enable_inline_pgp">Enable Inline-PGP</string>
     <string name="disable_inline_pgp">Disable Inline-PGP</string>
+    <string name="openpgp_inline_title">Compatibility Mode</string>
+    <string name="openpgp_inline_text">The e-mail will be sent in PGP/INLINE format.\nThis should only be used for compatibility:</string>
+    <string name="openpgp_inline_plus_compat">Some clients only support this format</string>
+    <string name="openpgp_inline_minus_transit">Signatures may break during transit</string>
+    <string name="openpgp_inline_minus_attach">Attachments are not supported</string>
 
 </resources>

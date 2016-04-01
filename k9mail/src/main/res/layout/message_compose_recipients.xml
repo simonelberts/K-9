@@ -54,6 +54,7 @@
             android:layout_gravity="center_vertical"
             android:id="@+id/openpgp_compat_indicator"
             android:src="@drawable/compatibility"
+            android:tint="@color/light_black"
             android:visibility="gone"
             tools:visibility="visible"
             />

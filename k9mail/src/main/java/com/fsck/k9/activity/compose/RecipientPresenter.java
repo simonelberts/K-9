@@ -567,11 +567,6 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
     }
 
-    public void onClickCompatIndicator() {
-        cryptoEnableCompat = false;
-        updateCryptoStatus();
-    }
-
     /**
      * Does the device actually have a Contacts application suitable for
      * picking a contact. As hard as it is to believe, some vendors ship
@@ -715,6 +710,13 @@ public class RecipientPresenter implements PermissionPingCallback {
     public void onMenuSetPgpInline(boolean enableCompat) {
         cryptoEnableCompat = enableCompat;
         updateCryptoStatus();
+        if (enableCompat) {
+            recipientMvpView.showOpenPgpInlineDialog(true);
+        }
+    }
+
+    public void onClickCompatIndicator() {
+        recipientMvpView.showOpenPgpInlineDialog(false);
     }
 
     public enum CryptoProviderState {
