@@ -704,17 +704,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     @Override
     public void onCryptoClick() {
-        try {
-            if (messageViewInfo.cryptoResultAnnotation == null) {
-                return;
-            }
-            PendingIntent pendingIntent = messageViewInfo.cryptoResultAnnotation.getOpenPgpPendingIntent();
-            if (pendingIntent != null) {
-                getActivity().startIntentSenderForResult(pendingIntent.getIntentSender(), 0, null, 0, 0, 0);
-            }
-        } catch (IntentSender.SendIntentException e) {
-            Log.e(K9.LOG_TAG, "SendIntentException", e);
-        }
+        CryptoClickHandler.handleCryptoClick(messageViewInfo, getActivity());
     }
 
     public interface MessageViewFragmentListener {

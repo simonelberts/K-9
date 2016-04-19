@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="24dp"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal">
+
+    <FrameLayout
+        android:layout_width="36dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/crypto_info_text1"
+        android:id="@+id/crypto_info_icon1"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:src="@drawable/status_signature_verified_cutout"
+            android:tint="@color/openpgp_blue"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:src="@drawable/status_none_dots_3"
+            android:clipToPadding="false"
+            android:alpha="0.05"
+            />
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/crypto_info_icon1"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="20dp"
+        android:minLines="2"
+        android:gravity="center_vertical"
+        android:id="@+id/crypto_info_text1"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Signed, but not encrypted."
+        />
+
+    <FrameLayout
+        android:layout_width="36dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/crypto_info_text1"
+        android:layout_alignBottom="@+id/crypto_info_text2"
+        android:id="@+id/crypto_info_icon2"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:src="@drawable/status_signature_verified_cutout"
+            android:clipToPadding="false"
+            android:alpha="0.05"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:src="@drawable/status_none_dots_3"
+            android:tint="@color/openpgp_blue"
+            android:clipToPadding="false"
+            />
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/crypto_info_text1"
+        android:layout_toRightOf="@+id/crypto_info_icon2"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/crypto_info_text2"
+        android:minLines="2"
+        android:gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Signed by trusted key."
+        />
+
+</RelativeLayout>
